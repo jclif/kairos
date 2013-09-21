@@ -8,6 +8,8 @@ app.engine('jade', require('jade').__express);
 app.get("/", function(req, res){
     res.render("page");
 });
+var io = require('socket.io').listen(app.listen(port));
+app.use(express.static(__dirname + '/public'));
 
 io.sockets.on('connection', function (socket) {
     socket.emit('message', { message: 'welcome to the chat' });
@@ -15,8 +17,5 @@ io.sockets.on('connection', function (socket) {
         io.sockets.emit('message', data);
     });
 });
-
-app.use(express.static(__dirname + '/public'));
  
-var io = require('socket.io').listen(app.listen(port));
 console.log("Listening on port " + port);
